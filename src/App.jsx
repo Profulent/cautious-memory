@@ -1,9 +1,9 @@
-import React from "react"
+import Hero from "./components/hero"
 
 function App() {
   return (
-    <main> 
-      <h1 className="text-5xl text-violet-300 font-bold">Welcome to Award Winning Website</h1>
+    <main className="relative min-h-screen w-screen overflow-x-hidden"> 
+      <Hero />
     </main>
   )
 }
