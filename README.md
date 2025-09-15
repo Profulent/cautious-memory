@@ -14,3 +14,5 @@ the impt thing you gotta do is : @theme in index.css
 
 
 The MiniVideoPlayer is the middle small video by which clicking it changes background to that video.
+
+onLoadedData is a special handler, that allows us to call a function once a data loads.
