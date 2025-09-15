@@ -16,3 +16,6 @@ the impt thing you gotta do is : @theme in index.css
 The MiniVideoPlayer is the middle small video by which clicking it changes background to that video.
 
 onLoadedData is a special handler, that allows us to call a function once a data loads.
+
+nextVideoRef is like a direct pointer to the <video> DOM element. After React renders, nextVideoRef.current will be the actual <video> node in the browser.
+USE CASE: Smoothly swap between videos without waiting for load, thats why nextVideoRef is used
