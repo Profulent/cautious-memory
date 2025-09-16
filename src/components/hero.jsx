@@ -1,4 +1,6 @@
 import React, { useRef, useState } from "react";
+import { TiLocationArrow } from "react-icons/ti";
+import Button from "./button";
 
 function Hero() {
   const [currentIndex, setCurrentIndex] = useState(1)
@@ -6,8 +8,8 @@ function Hero() {
   const [isLoading, setIsLoading] = useState(true)
   const [loadedVideos, setLoadedVideos] = useState(0)
 
-  const totalvideos = 3
-  const nextVideoRef = useRef(null)
+  const totalvideos = 4
+  const nextVideoRef = useRef(null) //nextVideoRef = { current: null } (useRef)
 
   const handleVideoLoad = () => {
     setLoadedVideos((prev) => prev + 1)
@@ -34,7 +36,7 @@ function Hero() {
           <div className="mask-clip-path absolute-center absolute z-50 size-64 cursor-pointer overflow-hidden rounded-lg">
             <div onClick={handleMiniVdClick} className="origin-center scale-50 opacity-0 transition-all duration-500 ease-in hover:scale-100 hover:opacity-100">
 
-              <video
+              <video // all these attributes for the minivideoplayer and the above onClick
                 ref={nextVideoRef}
                 src={getVideoSrc(upcomingVideoIndex)}
                 loop
@@ -75,11 +77,22 @@ function Hero() {
           <div className="mt-24 px-5 sm:px-10">
             <h1 className="special-font hero-heading text-blue-100">redefi<b>n</b>e</h1>
 
-            <p className="mb-5 max-w-64 font-robert-regular text-blue-100"> Enter the MetaGame Layer <br /> Unleash the Play Economy</p>
-          </div>
+            <p className="mb-5 max-w-64 font-robert-regular text-blue-100">
+              Enter the MetaGame Layer <br /> Unleash the Play Economy
+            </p>
 
+            <Button
+              id="watch-trailer"
+              title="Watch Trailer"
+              leftIcon={<TiLocationArrow />}
+              containerClass="bg-yellow-300 flex-center gap-1"
+            />
+
+
+          </div>
         </div>
       </div>
+
     </div>
   )
 }

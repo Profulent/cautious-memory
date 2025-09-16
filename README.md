@@ -17,5 +17,26 @@ The MiniVideoPlayer is the middle small video by which clicking it changes backg
 
 onLoadedData is a special handler, that allows us to call a function once a data loads.
 
-nextVideoRef is like a direct pointer to the <video> DOM element. After React renders, nextVideoRef.current will be the actual <video> node in the browser.
-USE CASE: Smoothly swap between videos without waiting for load, thats why nextVideoRef is used
+ref={nextVideoRef} just gives you direct access to the <video> DOM node. In your code, since you’re not using it, removing it won’t break anything. It’s only useful if you later want to .play(), .pause(), .mute(), or manipulate the video in JS.
+
+currentIndex will never go beyond 3 because of % totalvideos. The % ensures it wraps around.
+
+
+setLoadedVideos((prev) => prev + 1)
+is same as : 
+setLoadedVideos((loadedVideos) => loadedVideos + 1)
+First video loads → loadedVideos = 1
+Second video loads → loadedVideos = 2
+Third video loads → loadedVideos = 3
+
+Why keep track of loadedVideos?
+It gives you a count of how many videos have finished loading.
+You could use it later for things like:
+Showing a loading spinner until all videos are ready
+
+
+
+You attach onLoadedData={handleVideoLoad} to all 3 <video> tags in your component.
+So every time one of them finishes loading, loadedVideos increases by 1.
+suppose while npm run dev the project , Every time a video finishes loading its data, React calls handleVideoLoad(). When that happens, loadedVideos goes up by +1
+
