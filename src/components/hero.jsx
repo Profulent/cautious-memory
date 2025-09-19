@@ -1,6 +1,12 @@
 import React, { useRef, useState } from "react";
 import { TiLocationArrow } from "react-icons/ti";
 import Button from "./button";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
 
 function Hero() {
   const [currentIndex, setCurrentIndex] = useState(1)
@@ -23,18 +29,74 @@ function Hero() {
     setCurrentIndex(upcomingVideoIndex)
   }
 
+  useGSAP(() => {
+    if (hasClicked) {
+      gsap.set('#next-video', { visibility: 'visible' })
 
-  // function getVideo(index){
-  //   return `videos/hero-${index}.mp4`
-  // }
-  const getVideoSrc = (index) => `videos/hero-${index}.mp4`
+      gsap.to('#next-video', { // to means go to this state
+        transformOrigin: 'center center', //zooms from the center 
+        scale: 1, // grows to full size (1)
+        width: '100%',
+        height: '100%',
+        duration: 1, // animation lasts one second
+        ease: 'power1.inOut', // controls speed curve of the animation, makes the zoom smooth. 
+        onStart: () => nextVideoRef.current.play(), // ensures video plays right when the zoom animation starts
+      })
+
+      gsap.from('#current-video', { // pretends that it starts from the given attributes below to normal DOM state in the end.
+        transformOrigin: 'center center',
+        scale: 0,
+        duration: 1.5,
+        ease: 'power1.inOut',
+        onStart: () => nextVideoRef.current.play(),
+      })
+    }
+  }, { dependencies: [currentIndex], revertOnUpdate: true })
+
+
+
+
+  useGSAP(() => {
+    gsap.set('#video-frame', {
+      clipPath: "polygon(14% 0%, 72% 0%, 90% 90%, 0% 100%)",
+      borderRadius: '0 0 40% 10%',
+    })
+
+    gsap.from('#video-frame', {
+      clipPath: "polygon(0% 0% 100% 0% 100% 100% 0% 100%)",
+      borderRadius: '0 0 0 0',
+      ease: 'power1.inOut',
+      scrollTrigger: {
+        trigger: '#video-frame',
+        start: 'center center',
+        end: 'bottom center',
+        scrub: true,
+      }
+    })
+  })
+
+
+  const getVideoSrc = (index) =>
+    `videos/hero-${index}.mp4`
 
   return (
     <div className="relative h-dvh w-screen overflow-x-hidden">
-      <div id="video-frame" className="relative z-10 h-dvh w-screen overflow-hidden rounded-lg bg-blue-75">
+
+      {isLoading && (
+        <div>
+          <div className="three-body">
+            <div className="three-body__dot" />
+            <div className="three-body__dot" />
+            <div className="three-body__dot" />
+          </div>
+        </div>
+      )}
+      <div id="video-frame"
+        className="relative z-10 h-dvh w-screen overflow-hidden rounded-lg bg-blue-75">
         <div>
           <div className="mask-clip-path absolute-center absolute z-50 size-64 cursor-pointer overflow-hidden rounded-lg">
-            <div onClick={handleMiniVdClick} className="origin-center scale-50 opacity-0 transition-all duration-500 ease-in hover:scale-100 hover:opacity-100">
+            <div onClick={handleMiniVdClick}
+              className="origin-center scale-50 opacity-0 transition-all duration-500 ease-in hover:scale-100 hover:opacity-100">
 
               <video // all these attributes for the minivideoplayer and the above onClick
                 ref={nextVideoRef}
@@ -48,7 +110,9 @@ function Hero() {
 
             </div>
           </div>
-          <video
+
+
+          <video // This is like a staging area, a buffering kind of video, when you make a zoom in effect tabb ye help karega
             ref={nextVideoRef}
             src={getVideoSrc(currentIndex)}
             loop
@@ -58,7 +122,10 @@ function Hero() {
             onLoadedData={handleVideoLoad}
           />
 
-          <video src={getVideoSrc(currentIndex === totalvideos - 1 ? 1 : currentIndex)}
+
+
+          <video // This is the background video
+            src={getVideoSrc(currentIndex === totalvideos - 1 ? 1 : currentIndex)}
             autoPlay
             loop
             muted
@@ -93,6 +160,11 @@ function Hero() {
         </div>
       </div>
 
+      <h1
+        className="special-font hero-heading absolute *
+        bottom-5 right-5 text-black">
+        G<b>a</b>ming
+      </h1>
     </div>
   )
 }

@@ -40,3 +40,39 @@ You attach onLoadedData={handleVideoLoad} to all 3 <video> tags in your componen
 So every time one of them finishes loading, loadedVideos increases by 1.
 suppose while npm run dev the project , Every time a video finishes loading its data, React calls handleVideoLoad(). When that happens, loadedVideos goes up by +1
 
+
+npm i gsap @gsap/react
+useGSAP is a react hook, runs everytime the dependencies change 
+
+### NOTICE THIS : 
+  function getVideo(index){
+    return `videos/hero-${index}.mp4`}
+  is the same as => 
+  const getVideoSrc = (index) =>
+    `videos/hero-${index}.mp4`
+
+
+gsap.to('#next-video', { ... })
+Animates the next video to zoom in and cover the screen:
+
+ gsap.set('#next-video', { visibility: 'visible' })
+make the staging video appear immediately.
+there are 3 vids, pehli minivideo, second the transformation video jo cover up karti hai poori window ko and third one is jo minvideo pe click karke directly seedha background mein aati hai full. 
+gsap.from('#current-video', { ... })this animates the mini video popping in.
+
+<section className="z-0 min-h-screen bg-blue-500"/>
+    </main> added this in app.jsx
+    1. section indicates a section of content.
+    2. z-0 means element is at the base layer
+    3. min-h-screen makes the section at least the height of the whole viewport
+    => so all this makes a full screen blue bg section that sits behind my hero component. 
+
+    To make the three dots animation, you need to do this in hero.jsx : {isLoading && (
+        <div>
+          <div className="three-body">
+            <div className="three-body__dot" />
+            <div className="three-body__dot" />
+            <div className="three-body__dot" />
+          </div>
+        </div>
+      )}
