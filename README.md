@@ -76,3 +76,14 @@ gsap.from('#current-video', { ... })this animates the mini video popping in.
           </div>
         </div>
       )}
+
+
+gsap.timeline creates a trigger for a start and an end timeline. A timeline is like a container where you can add multiple animations, and GSAP will play them in order. 
+example: const tl = gsap.timeline()
+tl.to(".box1", { x: 100, duration: 1 })   // first animation
+  .to(".box2", { y: 100, duration: 1 })   // runs after box1 finishes
+
+ scrollTrigger: {
+        trigger: '#clip'
+
+        means we will trigger the gsap hook once it reaches the clip
