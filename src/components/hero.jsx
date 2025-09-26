@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TiLocationArrow } from "react-icons/ti";
 import Button from "./button";
 import { useGSAP } from "@gsap/react";
@@ -14,20 +14,26 @@ function Hero() {
   const [isLoading, setIsLoading] = useState(true)
   const [loadedVideos, setLoadedVideos] = useState(0)
 
-  const totalvideos = 4
+  const totalVideos = 4
   const nextVideoRef = useRef(null) //nextVideoRef = { current: null } (useRef)
 
   const handleVideoLoad = () => {
     setLoadedVideos((prev) => prev + 1)
   }
 
-  const upcomingVideoIndex = (currentIndex % totalvideos) + 1
+  const upcomingVideoIndex = (currentIndex % totalVideos) + 1
 
   const handleMiniVdClick = () => {
     setHasClicked(true)
 
     setCurrentIndex(upcomingVideoIndex)
   }
+
+  useEffect(()=>{
+    if(loadedVideos === totalVideos-1) {
+      setIsLoading (false)
+    }
+  }, [loadedVideos])
 
   useGSAP(() => {
     if (hasClicked) {
@@ -58,13 +64,13 @@ function Hero() {
 
   useGSAP(() => {
     gsap.set('#video-frame', {
-      clipPath: "polygon(14% 0%, 72% 0%, 90% 90%, 0% 100%)",
-      borderRadius: '0 0 40% 10%',
+      clipPath: "polygon(14% 0%, 72% 0%, 88% 90%, 0% 95%)",
+      borderRadius: '0% 0% 40% 10%',
     })
 
     gsap.from('#video-frame', {
-      clipPath: "polygon(0% 0% 100% 0% 100% 100% 0% 100%)",
-      borderRadius: '0 0 0 0',
+      clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+      borderRadius: '0% 0% 0% 0%',
       ease: 'power1.inOut',
       scrollTrigger: {
         trigger: '#video-frame',
@@ -83,7 +89,7 @@ function Hero() {
     <div className="relative h-dvh w-screen overflow-x-hidden">
 
       {isLoading && (
-        <div>
+        <div className="flex-center absolute z-[100] h-dvh w-screen overflow-hidden bg-violet-50">
           <div className="three-body">
             <div className="three-body__dot" />
             <div className="three-body__dot" />
@@ -125,7 +131,7 @@ function Hero() {
 
 
           <video // This is the background video
-            src={getVideoSrc(currentIndex === totalvideos - 1 ? 1 : currentIndex)}
+            src={getVideoSrc(currentIndex === totalVideos - 1 ? 1 : currentIndex)}
             autoPlay
             loop
             muted
